@@ -1,31 +1,134 @@
-# In this simple RPG game, the hero fights the goblin. He has the options to:
+from random import randint
+from tracemalloc import start
 
-# 1. fight goblin
-# 2. do nothing - in which case the goblin will attack him anyway
-# 3. flee
 
-def main():
-    hero_health = 10
-    hero_power = 5
-    goblin_health = 6
-    goblin_power = 2
+class Character:
+    def __init__(self, health, power, coins):
+        self.health = health
+        self.power = power
+        self.coins = coins
 
-    while goblin_health > 0 and hero_health > 0:
-        print("You have {} health and {} power.".format(hero_health, hero_power))
-        print("The goblin has {} health and {} power.".format(goblin_health, goblin_power))
+    def alive(self):
+        if self.health > 0:
+            return True
+        else:
+            return False
+    
+    def attack(self, enemy):
+        
+        if enemy.character_name != "zombie":
+            enemy.health -= self.power 
+     
+        if(self.character_name == "hero"):
+            print(f"You do {self.power} damage to the {enemy.character_name}.")
+        elif(self.character_name == "goblin" or self.character_name == "zombie"
+             or self.character_name == "medic" or self.character_name == "shadow"
+             or self.character_name == "dan" or self.character_name == "boss"):
+            print(f"The {self.character_name} does {self.power} damage to you.")
+        
+            
+    def print_status(self):
+        if self.character_name == "hero":
+            print (f"You have {self.health} health and {self.power} power.")
+        elif (self.character_name == "goblin" or self.character_name == "zombie"
+            or self.character_name == "medic" or self.character_name == "shadow"
+             or self.character_name == "dan" or self.character_name == "boss"):
+            print(f"The {self.character_name} has {self.health} health and {self.power} power.")
+        
+    def coins(self):
+        pass
+                  
+class Hero(Character):
+    def __init__(self, health, power, coins):
+        self.character_name = "hero"
+        super(Hero, self).__init__(health, power, coins)
+            
+    def attack(self, enemy):
+        crit = randint(1,5)
+        if crit == 3:
+            enemy.health -= (self.power * 2)
+            print(f'Critical damage!')
+            print(f'Hero does {self.power * 2} damage to {enemy.character_name}!')
+            hero.status
+            enemy.status
+        else:
+            enemy.health -= self.power
+            print(f'{self.character_name} does {self.power} damage to {enemy.character_name}.')
+            hero.status
+            enemy.status
+        
+               
+class Goblin(Character):
+    def __init__(self, health, power, coins):
+        self.character_name = "goblin"
+        super(Goblin, self).__init__(health, power, coins)
+
+class Zombie(Character):
+    def __init__(self, health, power, coins):
+        self.character_name = "zombie"
+        super(Zombie, self).__init__(health, power, coins)
+        
+class Medic(Character):
+    def __init__(self, health, power, coins):
+        self.character_name = "medic"
+        super(Medic, self).__init__(health, power, coins)
+    def attack(self, enemy):
+        crit = randint(1,5)
+        if crit == 3:
+            enemy.health += 2
+            print(f'{self.character_name} regenerates 2 health')
+        else:
+            enemy.health -= self.power
+            print(f'{self.character_name} does {self.power} damage to {enemy.character_name}.')
+
+class Shadow(Character):
+    def __init__(self, health, power, coins):
+        self.character_name = "shadow"
+        super(Shadow, self).__init__(health, power, coins)
+    def attack(self, enemy):    
+        crit = randint(1,10)
+    if crit == 1:
+        enemy.health -= self.power
+    else:
+        enemy.health -= self.power * 0
+        print(f'{self.character_name} does {self.power} damage to {enemy.character_name}')
+            
+class Dan(Character):
+    def __init__(self, health, power, coins):
+        self.character_name = "dan"
+        super(Dan, self).__init__(health, power, coins)
+class Boss(Character):
+    def __init__(self, health, power, coins):
+        self.character_name = "boss"
+        super(Boss, self).__init__(health, power, coins)
+        
+hero = Hero(10, 5)
+goblin = Goblin(6, 2)
+zombie = Zombie(1, 10)
+medic = Medic(40, 10, 15)
+shadow = Shadow(20, 10, 20)
+dan = Dan(10, 10, 20)
+boss  = Boss(50, 50, 30)
+    
+def main(enemy):
+    
+    while enemy.alive() > 0 and hero.alive():
+       
+        hero.print_status()
+        enemy.print_status()
         print()
         print("What do you want to do?")
-        print("1. fight goblin")
+        print(f"1. fight {enemy.character_name}")
         print("2. do nothing")
         print("3. flee")
         print("> ", end=' ')
         raw_input = input()
         if raw_input == "1":
             # Hero attacks goblin
-            goblin_health -= hero_power
-            print("You do {} damage to the goblin.".format(hero_power))
-            if goblin_health <= 0:
-                print("The goblin is dead.")
+            hero.attack(enemy)
+            
+            if not enemy.alive():
+                print(f"The {enemy.character_name} is dead.")
         elif raw_input == "2":
             pass
         elif raw_input == "3":
@@ -34,12 +137,64 @@ def main():
         else:
             print("Invalid input {}".format(raw_input))
 
-        if goblin_health > 0:
+        if enemy.alive():
             # Goblin attacks hero
-            hero_health -= goblin_power
-            print("The goblin does {} damage to you.".format(goblin_power))
-            if hero_health <= 0:
-                print("You are dead.")
+            enemy.attack(hero)
+            
+            if not hero.alive():
+                print("""You are dead.
+                      
+                            
+            ;::::;
+           ;::::; :;
+         ;:::::'   :;
+        ;:::::;     ;.
+       ,:::::'       ;           OOO
+       ::::::;       ;          OOOOO
+       ;:::::;       ;         OOOOOOOO
+      ,;::::::;     ;'         / OOOOOOO
+    ;:::::::::`. ,,,;.        /  / DOOOOOO
+  .';:::::::::::::::::;,     /  /     DOOOO
+ ,::::::;::::::;;;;::::;,   /  /        DOOO
+;`::::::`'::::::;;;::::: ,#/  /          DOOO
+:`:::::::`;::::::;;::: ;::#  /            DOOO
+::`:::::::`;:::::::: ;::::# /              DOO
+`:`:::::::`;:::::: ;::::::#/               DOO
+ :::`:::::::`;; ;:::::::::##                OO
+ ::::`:::::::`;::::::::;:::#                OO
+ `:::::`::::::::::::;'`:;::#                O
+  `:::::`::::::::;' /  / `:#
+   ::::::`:::::;'  /  /   `#
+   
+""")
 
-main()
+quit()
+   
+main(goblin)
+
+class store:
+    def store():
+        raw_input = input(f""" Welcome to the Shop
+        1. Buy Supertonic
+        2. Buy Armor
+        3. Buy Evade
+        4. Buy Sword
+        5. Quit
+        """)
+    raw_input = input()
+    if raw_input == "1":
+            store()
+    elif raw_input == "2":
+            store()
+    elif raw_input == "3":
+            quit()
+    else:
+            main()
+store()
+
+
+
+
+
+
 

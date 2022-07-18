@@ -8,7 +8,7 @@ You will base your game on version 7 of the game and make mods to the game.
 2. Make a new character called `Medic` that can sometimes recuperate 2 health points after being attacked with a probability of 20%
 3. Make a character called `Shadow` who has only 1 starting health but will only take damage about once out of every ten times he is attacked.
 4. Make a `Zombie` character that doesn't die even if his health is below zero
-5. Come up with at least two other characters with their individual characteristics, and implement them.
+5. Come up -with at least two other characters with their individual characteristics, and implement them.
 6. Give each enemy a bounty. For example, the prize for defeating the `Goblin` is 5 coins, for the Wizard it is 6 coins.
 
 ## Items
@@ -21,3 +21,4 @@ You will base your game on version 7 of the game and make mods to the game.
 1. Allow items to be used on the battle field. The hero can carry the items with him, and you have the option of choosing to use a tonic at any turn in a battle.
 2. Make a `Swap` item, which when used on a battle field, will swap the power values of the two characters for one turn.
 3. There is a bug in the store that allows the hero to buy items even if he has no coins. Fix this bug.
+
